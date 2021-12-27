@@ -52,7 +52,7 @@ class TodosController < ApplicationController
     @todo.destroy
 
     respond_to do |format|
-      format.html { redirect_to todos_url, notice: "Todo was successfully destroyed." }
+      format.html { redirect_to todos_url, notice: "Todo was successfully Checked-off!." }
       format.json { head :no_content }
     end
   end
@@ -65,6 +65,6 @@ class TodosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def todo_params
-      params.require(:todo).permit(:description)
+      params.require(:todo).permit(:name, :description)
     end
 end
