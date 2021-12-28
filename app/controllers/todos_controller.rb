@@ -3,9 +3,11 @@ class TodosController < ApplicationController
 
   # GET /todos or /todos.json
   def index
-    @todos = Todo.all
+    @todos_incomplete = Todo.where(completed: false)
   end
-
+  def completed
+    @todos_complete = Todo.where(completed: true)
+  end
   # GET /todos/1 or /todos/1.json
   def show
   end
@@ -43,6 +45,23 @@ class TodosController < ApplicationController
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @todo.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def check
+    @todo = Todo.find(params[:id])
+    state = @todo.completed
+    @todo.update(completed: !state)
+    if(!state)
+      respond_to do |format|
+        format.html { redirect_to todos_url, notice: "Todo was Checked!" }
+        format.json { render :show, status: :ok, location: @todo }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to completed_url , notice: "Todo was Un-Checked!" }
+        format.json { render :show, status: :ok, location: @todo }
       end
     end
   end
